@@ -26,8 +26,8 @@
                 <label for="formFile" class="form-label">Default file input example</label>
                 <input class="form-control" type="file" id="formFile" name="csv_file" accept=".csv">
             </div>
-        </form>
             <button class="btn btn-primary" type="submit">Parse</button>
+        </form>
         </div>
     </body>
 </html>
