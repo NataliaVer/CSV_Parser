@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('residents', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('last_name');
-            $table->string('age');
-            $table->string('street');
-            $table->string('house');
-            $table->string('city');
-            $table->string('zip');
-            $table->string('currency');
-            $table->string('housecolor');
-            $table->string('date');
+            $table->string('name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('age')->nullable();
+            $table->string('street')->nullable();
+            $table->string('house')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('currency')->nullable();
+            $table->string('housecolor')->nullable();
+            $table->string('date')->nullable();
             $table->timestamps();
         });
     }

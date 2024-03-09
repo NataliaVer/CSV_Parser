@@ -32,8 +32,9 @@ class ResidentCSVData implements ShouldQueue
     public function handle(): void
     {
         foreach($this->data as $resident) {
+            $id = array_shift($resident);
             $residentInput = array_combine($this->header, $resident);
-            Prodact::create($residentInput);
+            Resident::updateOrCreate($residentInput);
         }
     }
 }

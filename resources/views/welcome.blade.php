@@ -23,10 +23,21 @@
                 @method('post')
                 @csrf
             <div class="mb-3">
-                <label for="formFile" class="form-label">Default file input example</label>
+                <label for="formFile" class="form-label">Import file in database</label>
                 <input class="form-control" type="file" id="formFile" name="csv_file" accept=".csv">
             </div>
-            <button class="btn btn-primary" type="submit">Parse</button>
+            <button class="btn btn-primary" type="submit">Import</button>
+        </form>
+        </div>
+
+        <div class="container text-center pt-5">
+            <form action="{{ route('exportFile') }}" method="post" enctype="multipart/form-data">
+                @method('get')
+                @csrf
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Export file from database</label>
+            </div>
+            <button class="btn btn-primary" type="submit">Export</button>
         </form>
         </div>
     </body>
