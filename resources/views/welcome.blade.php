@@ -26,6 +26,9 @@
             <div class="mb-3">
                 <label for="formFile" class="form-label">Import file in database</label>
                 <input class="form-control" type="file" id="formFile" name="csv_file" accept=".csv">
+                @error('csv_file')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror    
             </div>
             <button class="btn btn-primary" type="submit">Import</button>
         </form>
@@ -36,10 +39,36 @@
                 @method('get')
                 @csrf
             <div class="mb-3">
-                <label for="formFile" class="form-label">Export file from database</label>
+                <label for="ExpFile" class="form-label">Export file from database</label>
             </div>
-            <button class="btn btn-primary" type="submit">Export</button>
+            <button class="btn btn-primary" type="submit" id="ExpFile">Export</button>
         </form>
+        </div>
+
+        {{-- it fields havn't work yet --}}
+        <div class="container text-center pt-5 d-none">
+            <form action="{{ route('file.edit') }}" method="post">
+                @method('patch')
+                @csrf
+                <div class="mb-3">
+                      <label for="update" class="form-label">Edit data</label>
+                </div>
+                <div class="py-1">
+                    <input type="number" id="resident_id" name="resident_id" placeholder="ID">
+                    <input type="text" id="name" name="name" placeholder="name">
+                    <input type="text" id="last_name" name="last_name" placeholder="last_name">
+                    <input type="number" id="age" name="age" placeholder="age">
+                    <input type="text" id="street" name="street" placeholder="street">
+                    <input type="text" id="house" name="house" placeholder="house">
+                    <input type="text" id="city" name="city" placeholder="city">
+                    <input type="text" id="state" name="state" placeholder="state">
+                    <input type="text" id="zip" name="zip" placeholder="zip">
+                    <input type="text" id="currency" name="currency" placeholder="currency">
+                    <input type="text" id="housecolor" name="housecolor" placeholder="housecolor">
+                    <input type="date" id="date" name="date">
+                </div>
+                <button class="btn btn-primary" type="submit" id="update">Update</button>
+            </form>
         </div>
 
         <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -60,10 +89,12 @@
     </body>
 </html>
 
-@if(!empty(session('success')) && session('success') === 1)
+
 <script type="text/javascript">
 window.onload = function() {
+    @if(!empty(session('success')) && session('success') === 1)
     $('#exampleModal').modal('show');
+    @endif
 }
 </script>
-@endif
+

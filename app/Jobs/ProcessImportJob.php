@@ -7,7 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Bus;
 
 class ProcessImportJob implements ShouldQueue
 {
@@ -32,7 +31,6 @@ class ProcessImportJob implements ShouldQueue
         $skipHeader = true;
         $chunks = array_chunk($file, 2000);
         $header = ['name', 'last_name', 'age', 'street', 'house', 'city', 'state', 'zip', 'currency', 'housecolor', 'date'];
-        $batch  = Bus::batch([])->dispatch();
 
         foreach ($chunks as $key => $chunk) {
             $data = array_map('str_getcsv', $chunk);

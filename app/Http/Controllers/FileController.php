@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Jobs\ResidentCSVData;
 use App\Models\Resident;
-use Illuminate\Support\Facades\Bus;
 use App\Jobs\ProcessImportJob;
+
+use App\Http\Requests\EditResidentRequest;
 
 class FileController extends Controller
 {
@@ -28,7 +29,7 @@ class FileController extends Controller
             return redirect()->route('home')
                                 ->with('success', 1);
         }
-        return true;
+        return back()->withErrors(['csv_file' => "The file field is empty"]);
     }
 
     public function export() {
@@ -55,5 +56,16 @@ class FileController extends Controller
 
         return response()->download($handle);
 
+    }
+
+    public function edit(EditResidentRequest $request) {
+
+        $data = $request->validated();
+
+        $resident = Resident::find($request->resident_id);
+
+        if ($resident) {
+            $resident->update($data);
+        }
     }
 }
