@@ -26,7 +26,7 @@ class FileController extends Controller
             $storedFile = $file->store('csv', 'public');
             dispatch(new ProcessImportJob(storage_path('app/public/' . $storedFile)));
             return redirect()->route('home')
-                                ->with('success', 'CSV is being processed...');
+                                ->with('success', 1);
         }
         return true;
     }
@@ -44,7 +44,7 @@ class FileController extends Controller
 
         Resident::select("id", "name", "last_name", "age", "street", "house",
                          "city", "state", "zip", "currency", "housecolor", "date")
-                  ->chunk(1000, function($residents) use ($handle) {
+                  ->chunk(2000, function($residents) use ($handle) {
             foreach($residents->toArray() as $resident) {
                 fputcsv($handle, $resident);
             }

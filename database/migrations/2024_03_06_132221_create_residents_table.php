@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('age')->nullable();
+            $table->string('age')->nullable();//integer
             $table->string('street')->nullable();
-            $table->string('house')->nullable();
+            $table->string('house')->nullable();//integer
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('zip')->nullable();
             $table->string('currency')->nullable();
             $table->string('housecolor')->nullable();
-            $table->string('date')->nullable();
+            $table->string('date')->nullable();//can use date format
             $table->timestamps();
         });
     }
