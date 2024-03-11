@@ -27,43 +27,43 @@ class ProcessImportJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $file = file($this->storedFile);
-        $skipHeader = true;
-        $chunks = array_chunk($file, 2000);
-        $header = ['name', 'last_name', 'age', 'street', 'house', 'city', 'state', 'zip', 'currency', 'housecolor', 'date'];
+        // $file = file($this->storedFile);
+        // $skipHeader = true;
+        // $chunks = array_chunk($file, 2000);
+        // $header = ['name', 'last_name', 'age', 'street', 'house', 'city', 'state', 'zip', 'currency', 'housecolor', 'date'];
 
-        foreach ($chunks as $key => $chunk) {
-            $data = array_map('str_getcsv', $chunk);
-            if($key == 0){
-                unset($data[0]);
-            }
+        // foreach ($chunks as $key => $chunk) {
+        //     $data = array_map('str_getcsv', $chunk);
+        //     if($key == 0){
+        //         unset($data[0]);
+        //     }
 
-            //remove column id
-            $data = array_map(function($arr) {
-                unset($arr[0]);
-                return $arr;
-            }, $data);
+        //     //remove column id
+        //     $data = array_map(function($arr) {
+        //         unset($arr[0]);
+        //         return $arr;
+        //     }, $data);
 
-            //unique elements
-            $data = array_unique($data, SORT_REGULAR);
+        //     //unique elements
+        //     $data = array_unique($data, SORT_REGULAR);
 
-            dispatch(new ResidentCSVData($data, $header));
-        }
+        //     dispatch(new ResidentCSVData($data, $header));
+        // }
 
-        unlink($this->storedFile);
+        // unlink($this->storedFile);
 
         // $fileStream = fopen($this->storedFile, 'r');
-        // $skipHeader = true;
-        // $header = ['name', 'last_name', 'age', 'street', 'house', 'city', 'state', 'zip', 'currency', 'housecolor', 'date'];
-        // while ($row = fgetcsv($fileStream)) {
-        //     if ($skipHeader) {
-        //         $skipHeader = false;
-        //         continue;
-        //     }
-        //     $id = array_shift($row);
-        //     dispatch(new ResidentCSVData($row, $header));
-        // }
-        // fclose($fileStream);
-        // unlink($this->storedFile);
+        $skipHeader = true;
+        $header = ['name', 'last_name', 'age', 'street', 'house', 'city', 'state', 'zip', 'currency', 'housecolor', 'date'];
+        while ($row = fgetcsv($fileStream)) {
+            if ($skipHeader) {
+                $skipHeader = false;
+                continue;
+            }
+            $id = array_shift($row);
+            dispatch(new ResidentCSVData($row, $header));
+        }
+        fclose($fileStream);
+        unlink($this->storedFile);
     }
 }

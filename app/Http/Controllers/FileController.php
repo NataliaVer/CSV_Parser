@@ -25,9 +25,24 @@ class FileController extends Controller
             // $csvFile = public_path('csv/' . $request->hasFile('csv_file'));
             $file = $request->file('csv_file');
             $storedFile = $file->store('csv', 'public');
-            dispatch(new ProcessImportJob(storage_path('app/public/' . $storedFile)));
-            return redirect()->route('home')
-                                ->with('success', 1);
+            // dispatch(new ProcessImportJob(storage_path('app/public/' . $storedFile)));
+            // return redirect()->route('home')
+            //                     ->with('success', 1);
+            $header = ['name', 'last_name', 'age', 'street', 'house', 'city', 'state', 'zip', 'currency', 'housecolor', 'date'];
+            $storedFile = storage_path('app/public/' . $storedFile);
+            $fileStream = fopen($storedFile, 'r');
+            $skipHeader = true;
+            while ($row = fgetcsv($fileStream)) {
+                if ($skipHeader) {
+                    $skipHeader = false;
+                    continue;
+                }
+                $id = array_shift($row);
+                // dump($row);
+                dispatch(new ResidentCSVData($row, $header));
+            }
+            fclose($fileStream);
+            unlink($storedFile);
         }
         return back()->withErrors(['csv_file' => "The file field is empty"]);
     }
