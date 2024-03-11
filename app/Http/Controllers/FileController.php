@@ -43,6 +43,8 @@ class FileController extends Controller
             }
             fclose($fileStream);
             unlink($storedFile);
+            return redirect()->route('home')
+                                ->with('success', 1);
         }
         return back()->withErrors(['csv_file' => "The file field is empty"]);
     }
