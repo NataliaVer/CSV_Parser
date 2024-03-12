@@ -22,7 +22,6 @@ class FileController extends Controller
 
         if($request->hasFile('csv_file')) {
 
-            // $csvFile = public_path('csv/' . $request->hasFile('csv_file'));
             $file = $request->file('csv_file');
             $storedFile = $file->store('csv', 'public');
             // dispatch(new ProcessImportJob(storage_path('app/public/' . $storedFile)));
@@ -37,12 +36,22 @@ class FileController extends Controller
                     $skipHeader = false;
                     continue;
                 }
-                $id = array_shift($row);
-                // dump($row);
-                dispatch(new ResidentCSVData($row, $header));
+
+                $data[] = $row;
+                if(count($data)>= 2000) {
+                    dispatch(new ResidentCSVData($data, $header));
+                    $data = [];
+                }
             }
+
+            if(count($data)> 0) {
+                dispatch(new ResidentCSVData($data, $header));
+                $data = [];
+            }
+
             fclose($fileStream);
             unlink($storedFile);
+
             return redirect()->route('home')
                                 ->with('success', 1);
         }

@@ -30,9 +30,20 @@ class ResidentCSVData implements ShouldQueue
      */
     public function handle(): void
     {
-        // foreach($this->data as $resident) {
-            $residentInput = array_combine($this->header, $this->data);
+        // $residentInput = array_combine($this->header, $this->data);
+        // Resident::updateOrCreate($residentInput);
+        
+        //remove column id
+        $data = array_map(function($arr) {
+            unset($arr[0]);
+            return $arr;
+        }, $this->data);
+
+        //unique elements
+        $data = array_unique($data, SORT_REGULAR);
+        foreach($data as $resident) {
+            $residentInput = array_combine($this->header, $resident);
             Resident::updateOrCreate($residentInput);
-        // }
+        }
     }
 }
