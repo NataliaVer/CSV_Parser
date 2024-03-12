@@ -43,7 +43,7 @@ class ResidentCSVData implements ShouldQueue
         $data = array_unique($data, SORT_REGULAR);
         foreach($data as $resident) {
             $residentInput = array_combine($this->header, $resident);
-            Resident::updateOrCreate($residentInput);
+            Resident::Create($residentInput);
         }
     }
 }
